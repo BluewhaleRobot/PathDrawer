@@ -1,0 +1,41 @@
+{
+  "name": "path-drawer",
+  "version": "1.0.0",
+  "description": "A program to process ORB_SLAM2 map points and path",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js",
+    "build": "electron-packager . app --overwrite --platform linux --arch x64 --out dist/",
+    "deb64": "electron-installer-debian --src dist/app-linux-x64/ --dest dist/installers/ --arch amd64 --config package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlueWhaleRobot/PathDrawer.git"
+  },
+  "keywords": [
+    "path",
+    "ORB_SLAM2",
+    "map",
+    "track"
+  ],
+  "author": "BlueWhale",
+  "license": "LGPL",
+  "bugs": {
+    "url": "https://github.com/BlueWhaleRobot/PathDrawer/issues"
+  },
+  "homepage": "https://github.com/BlueWhaleRobot/PathDrawer#readme",
+  "devDependencies": {
+    "electron-prebuilt": "1.2.3",
+    "electron-installer-debian": "latest",
+    "electron-packager": "latest",
+    "bson-stream": "latest",
+    "q": "latest"
+  },
+  "icon": {
+    "48x48": "resources/android-icon-48x48.png",
+    "64x64": "resources/Icon64x64.png",
+    "128x128": "resources/Icon128x128.png",
+    "256x256": "resources/Icon256x256.png"
+  },
+  "bin": "pathdrawer"
+}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>路径编辑器</title>
+    <link rel='stylesheet' href='css/index.css'>
+  </head>
+  <body>
+    <div class="contents">
+      <div class="main">
+        <div class="space-result">
+          <div class="draw-tool">
+            <ul class="draw-tool-list">
+              <li><a href="#" class="tool-move active" title="移动"></a></li>
+              <li><a href="#" class="tool-pencil" title="铅笔工具"></a></li>
+              <li><a href="#" class="tool-eraser" title="橡皮擦工具"></a></li>
+              <li><a href="#" class="tool-smooth" title="平滑工具"></a></li>
+              <li><a href="#" class="tool-select" title="选择工具"></a></li>
+              <li><a href="#" class="tool-nav-points" title="添加目标点"></a></li>
+            </ul>
+          </div>
+          <canvas id="text-canvas"></canvas>
+          <canvas class="canvas-result" id="canvas"></canvas>
+        </div>
+      </div>
+      <div class="status-bar">
+        状态： 编辑中
+      </div>
+    </div>
+    <!-- vertex shader -->
+
+    <script id="2d-vertex-shader" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+
+    uniform vec2 u_resolution;
+    uniform vec2 u_translation;
+    uniform vec2 u_rotation;
+    uniform vec2 u_scale;
+
+    void main() {
+      // Scale the positon
+      vec2 scaledPosition = a_position * u_scale;
+
+      // Rotate the position
+      vec2 rotatedPosition = vec2(
+         scaledPosition.x * u_rotation.y + scaledPosition.y * u_rotation.x,
+         scaledPosition.y * u_rotation.y - scaledPosition.x * u_rotation.x);
+
+      // Add in the translation.
+      vec2 position = rotatedPosition + u_translation;
+
+      // convert the position from pixels to 0.0 to 1.0
+      vec2 zeroToOne = position / u_resolution;
+
+      // convert from 0->1 to 0->2
+      vec2 zeroToTwo = zeroToOne * 2.0;
+
+      // convert from 0->2 to -1->+1 (clipspace)
+      vec2 clipSpace = zeroToTwo - 1.0;
+
+      gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+    }
+    </script>
+    <!-- fragment shader -->
+    <script id="2d-fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+
+    uniform vec4 u_color;
+
+    void main() {
+       gl_FragColor = u_color;
+    }
+    </script>
+    <script>
+      require("./js/index.js");
+    </script>
+  </body>
+</html>
